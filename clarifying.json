@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ClarifyAndExtract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "extracted",
+    "questions"
+  ],
+  "properties": {
+    "extracted": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dataset_size",
+        "problem_domain",
+        "required_compute_characteristics",
+        "supporting_tools"
+      ],
+      "properties": {
+        "dataset_size": {
+          "type": "string"
+        },
+        "problem_domain": {
+          "type": "string"
+        },
+        "required_compute_characteristics": {
+          "type": "string"
+        },
+        "supporting_tools": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10
+        }
+      }
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "field",
+          "question"
+        ],
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "dataset_size",
+              "problem_domain",
+              "required_compute_characteristics",
+              "supporting_tools"
+            ]
+          },
+          "question": {
+            "type": "string",
+            "minLength": 8
+          }
+        }
+      }
+    }
+  }
+}

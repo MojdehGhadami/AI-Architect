@@ -1,0 +1,118 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "RetrievalPlan",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "should_retrieve",
+        "blocked_reason",
+        "queries"
+    ],
+    "properties": {
+        "should_retrieve": {
+            "type": "boolean"
+        },
+        "blocked_reason": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "queries": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 10,
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "kb",
+                    "intent",
+                    "query_text",
+                    "top_k"
+                ],
+                "properties": {
+                    "kb": {
+                        "type": "string",
+                        "enum": [
+                            "cloud_pricing_db",
+                            "hf_models",
+                            "k8s_marketplace",
+                            "local_cluster_optional"
+                        ]
+                    },
+                    "intent": {
+                        "type": "string",
+                        "enum": [
+                            "gpu_selection",
+                            "model_recommendation",
+                            "component_selection",
+                            "availability_check"
+                        ]
+                    },
+                    "query_text": {
+                        "type": "string",
+                        "minLength": 10
+                    },
+                    "filters": {
+                        "type": [
+                            "object",
+                            "null"
+                        ],
+                        "additionalProperties": true
+                    },
+                    "top_k": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 20,
+                        "default": 10
+                    }
+                }
+            }
+        }
+    },
+    "allOf": [
+        {
+            "if": {
+                "properties": {
+                    "should_retrieve": {
+                        "const": false
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "queries": {
+                        "maxItems": 0
+                    },
+                    "blocked_reason": {
+                        "type": "string",
+                        "minLength": 5
+                    }
+                },
+                "required": [
+                    "blocked_reason"
+                ]
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "should_retrieve": {
+                        "const": true
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "queries": {
+                        "minItems": 1
+                    },
+                    "blocked_reason": {
+                        "const": null
+                    }
+                }
+            }
+        }
+    ]
+}
