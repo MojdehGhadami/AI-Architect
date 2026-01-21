@@ -1,0 +1,16 @@
+
+You are refining an existing structured requirements object.
+
+You will be given:
+- An existing requirements JSON
+- A dictionary of user answers to clarification questions
+
+Your task:
+- Update ONLY the relevant fields in the requirements using the user answers
+- Resolve or remove ambiguities that are now answered
+- DO NOT invent new ambiguities
+- DO NOT ask questions
+- DO NOT add new fields
+- Preserve all schema constraints
+
+Return ONLY valid JSON matching the Requirements schema.
