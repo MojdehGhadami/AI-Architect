@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AIArchitectRequirements",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "request_id", "goal", "data", "training", "deployment", "constraints", "decision_gates"],
+  "properties": {
+    "version": { "type": "string" },
+    "request_id": { "type": "string" },
+    "goal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["problem_domain", "task_type", "target_condition"],
+      "properties": {
+        "problem_domain": {
+          "enum": ["medical_imaging", "computer_vision", "nlp", "speech_audio", "tabular", "time_series", "recommender", "multimodal", "unknown"]
+        },
+        "task_type": {
+          "enum": [
+            "image-segmentation", "object-detection", "image-classification",
+            "text-classification", "token-classification", "question-answering", "text-generation",
+            "automatic-speech-recognition", "audio-classification",
+            "tabular-classification", "tabular-regression", "other", "unknown"
+          ]
+        },
+        "target_condition": { "type": "string" }
+      }
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["modality", "dimensionality", "dataset_size_tb", "file_format", "labels_available", "label_type"],
+      "properties": {
+        "modality": { "enum": ["image", "text", "audio", "tabular", "multimodal", "unknown"] },
+        "dimensionality": { "enum": ["1D", "2D", "3D", "not_applicable", "unknown"] },
+        "dataset_size_tb": { "type": ["number", "null"], "minimum": 0 },
+        "file_format": { "type": "string" },
+        "labels_available": { "type": "string" },
+        "label_type": { "type": "string" }
+      }
+    },
+    "training": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategy", "pretrained_allowed", "framework", "precision"],
+      "properties": {
+        "strategy": { "enum": ["train_from_scratch", "fine_tune", "inference_only", "unknown"] },
+        "pretrained_allowed": { "type": "string" },
+        "framework": { "enum": ["pytorch", "tensorflow", "jax", "no_preference", "unknown"] },
+        "precision": { "type": "string" }
+      }
+    },
+    "deployment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["environment", "data_residency", "compliance", "privacy_level"],
+      "properties": {
+        "environment": { "enum": ["cloud_k8s", "on_prem", "hybrid", "edge_device", "air_gapped", "unknown"] },
+        "data_residency": { "type": "string" },
+        "compliance": { "type": "array", "items": { "type": "string" } },
+        "privacy_level": { "type": "string" }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["latency_requirement", "throughput_requirement", "budget_level"],
+      "properties": {
+        "latency_requirement": { "type": "string" },
+        "throughput_requirement": { "type": "string" },
+        "budget_level": { "enum": ["low", "medium", "high", "unknown"] }
+      }
+    },
+    "decision_gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool_ready", "missing_critical"],
+      "properties": {
+        "tool_ready": { "type": "boolean" },
+        "missing_critical": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
