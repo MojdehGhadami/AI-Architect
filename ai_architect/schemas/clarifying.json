@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ClarifyingQuestions",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["questions"],
+  "properties": {
+    "questions": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["field", "question", "why_it_matters"],
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "goal.task_type",
+              "data.modality",
+              "data.dimensionality",
+              "data.dataset_size_tb",
+              "training.strategy",
+              "training.framework",
+              "deployment.environment",
+              "deployment.compliance"
+            ]
+          },
+          "question": { "type": "string", "minLength": 8 },
+          "why_it_matters": { "type": "string", "minLength": 5 },
+          "options": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 8,
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}
